@@ -1,5 +1,5 @@
 # Detector Tracker
-Use object detection and tracking to follow objects as they move across the frame. Detectors are resource expensive, so this combination reduces stress on the system, increasing the resulting bounding box output rate. The detector is set to execute every 30 frames, but this can be adjusted by changing the value of the `detect_period` variable.
+Use [Object Detection](https://alwaysai.co/docs/application_development/core_computer_vision_services.html#object-detection) and [Object Tracking](https://alwaysai.co/docs/application_development/core_computer_vision_services.html#object-tracking) to follow objects as they move across the frame. Detectors are resource expensive, so this combination reduces stress on the system, increasing the resulting bounding box output rate. The detector is set to execute every 30 frames, but this can be adjusted by changing the value of the `detect_period` variable.
 
 ## Requirements
 * [alwaysAI account](https://alwaysai.co/auth?register=true)
