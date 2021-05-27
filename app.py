@@ -1,16 +1,5 @@
 import time
 import edgeiq
-"""
-Use object detection and tracking to follow objects as they move across
-the frame. Detectors are resource expensive, so this combination
-reduces stress on the system, increasing the resulting bounding box output
-rate. The detector is set to execute every 30 frames, but this can be
-adjusted by changing the value of the `detect_period` variable.
-
-To change the computer vision model, the engine and accelerator,
-and add additional dependencies read this guide:
-https://alwaysai.co/docs/application_development/configuration_and_packaging.html
-"""
 
 
 def object_enters(object_id, prediction):
@@ -18,7 +7,7 @@ def object_enters(object_id, prediction):
 
 
 def object_exits(object_id, prediction):
-    print("{} exits".format(prediction.label, object_id))
+    print("{} exits".format(prediction.label))
 
 
 def main():
