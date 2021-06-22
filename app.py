@@ -11,10 +11,6 @@ def object_exits(object_id, prediction):
 
 
 def main():
-    # The current frame index
-    frame_idx = 0
-    # The number of frames to skip before running detector
-    detect_period = 30
 
     obj_detect = edgeiq.ObjectDetection(
             "alwaysai/ssd_mobilenet_v1_coco_2018_01_28")
@@ -25,9 +21,8 @@ def main():
     print("Model:\n{}\n".format(obj_detect.model_id))
     print("Labels:\n{}\n".format(obj_detect.labels))
 
-    tracker = edgeiq.CorrelationTracker(
-            max_objects=5,
-            deregister_frames=detect_period+20,
+    tracker = edgeiq.CentroidTracker(
+            deregister_frames=30,
             enter_cb=object_enters,
             exit_cb=object_exits)
     fps = edgeiq.FPS()
@@ -41,13 +36,8 @@ def main():
 
             while True:
                 frame = video_stream.read()
-                predictions = []
-                detect = frame_idx % detect_period == 0
-
-                if detect:
-                    results = obj_detect.detect_objects(
-                            frame, confidence_level=.5)
-                    predictions = results.predictions
+                results = obj_detect.detect_objects(frame, confidence_level=.5)
+                predictions = results.predictions
 
                 # Generate text to display on streamer
                 text = ["Model: {}".format(obj_detect.model_id)]
@@ -56,7 +46,7 @@ def main():
                             results.duration))
                 text.append("Objects:")
 
-                objects = tracker.update(predictions, frame)
+                objects = tracker.update(predictions)
 
                 # Update the label to reflect the object ID
                 tracked_predictions = []
@@ -72,7 +62,6 @@ def main():
                         frame, tracked_predictions, show_labels=True,
                         show_confidences=False, colors=obj_detect.colors)
                 streamer.send_data(frame, text)
-                frame_idx += 1
                 fps.update()
 
                 if streamer.check_exit():
